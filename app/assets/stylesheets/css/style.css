@@ -1,0 +1,17 @@
+input.large {
+    font-size: 1.3em;
+    height: 25px;
+}
+input.span4, textarea.span4, .uneditable-input.span4 {
+    width: 360px;
+}
+input.large {
+    font-size: 1.3em;
+    height: 25px;
+}
+.span4 {
+    width: 370px;
+}
+input.span4, textarea.span4, .uneditable-input.span4 {
+    width: 360px;
+}

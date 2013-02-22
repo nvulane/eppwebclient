@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Epp WebClient</title>
+    <meta content="3602" http-equiv="refresh">
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= csrf_meta_tags %>
+    <style type="text/css">
+      body {
+              padding-top: 60px;
+              padding-bottom: 40px;
+          }
+      .sidebar-nav {
+                      padding: 9px 0;
+                  }
+      .form-background {
+        background-color: #E6E6E6;
+        background-image: -moz-linear-gradient(center top , #EFEFEF, #D8D8D8);
+        background-repeat: repeat-x;
+        border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+        border-radius: 6px 6px 6px 6px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        margin-top: 0px;
+        padding: 20px 40px 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+                  <div class="container">
+                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                            </a>
+                            <img class="brand" alt="MTN Business" />
+                            <div class="nav-collapse">
+                                    <% @balance = @epp.info_balance("mtnbus")[:balance].to_s %>
+                                    <strong>
+                                    <ul class="nav pull-right">
+                                        <li><%=link_to("Logout", {:controller => 'WelcomeWhois',:action => "logout"})%></li>
+                                    </ul>
+                                    </strong>
+                                    <p class="navbar-text pull-right">Balance: R <%= @balance != "" ? @balance : "0.00" %></p>
+                            </div><!--/.nav-collapse -->
+                    </div>
+            </div>
+    </div>
+    <div class="container">
+        <div class="row-fluid">
+          <div class="tabbable">
+            <ul class="nav nav-pills">
+              <li class="dropdown">
+                <a class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  href="#">
+                    New
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to ("Customer","#modal-customer", 'data-toggle' => "modal") %></li>
+                  <li><%= link_to ("Domain","#modal-domain", 'data-toggle' => "modal") %></li>
+                  <li><%= link_to ("Name Server","#modal-host", 'data-toggle' => "modal") %></li>
+                </ul>
+              </li>
+              <li class=<%= @page_tab == "messages" ? "active" : "" %>><%= link_to ("Unread "+@count.to_s,{:action => 'index'})%></li>
+              <li class=<%= @page_tab == "customers" ? "active" : "" %>><%= link_to ("Customers",{:action => 'customers'})%></li>
+              <li class=<%= @page_tab == "domains" ? "active" : "" %>><%= link_to ("Domains",{:action => 'domains'})%></li>
+              <li class=<%= @page_tab == "hosts" ? "active" : "" %>><%= link_to ("Host Servers",{:action => 'hosts'})%></li>
+              <li class="dropdown pull-right">
+                <a class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  href="#">
+                    More
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Read Messages",{:action => 'read_messages'})%></li>
+                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Deleted Domains",{:action => 'deleted_domains'})%></li>
+                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Requested Domains",{:action => 'requested_domains'})%></li>
+                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Request Transfer","#modal-request", 'data-toggle' => "modal") %></li>
+                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Events",{:action => 'events'})%></li>
+                </ul>
+              </li>
+            </ul>
+            <div id="tables" class="tab-content">
+              <div id="tabledata">
+                <% flash.each do |key, value| %>
+                  <div class="alert alert-<%= key %>"><%= value %>
+                    <a class="close" data-dismiss="alert" href="#">&times;</a>
+                  </div>
+                <% end %>
+                <%= yield %>
+              </div>
+              <div id="modal-customer" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Add New Customer</h3>
+                </div>
+                <div class="modal-body">
+                  <%= render :template => 'epp_client/new_customer'%>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+              </div>
+              <div id="modal-domain" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Add New Domain</h3>
+                </div>
+                <div class="modal-body">
+                  <%= render :template => 'epp_client/new_domain'%>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+              </div>
+              <div id="modal-host" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Add New Name Server</h3>
+                </div>
+                <div class="modal-body">
+                  <%= render :template => 'epp_client/new_host'%>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+              </div>
+              <div id="modal-request" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Request Domain Transferal</h3>
+                </div>
+                <div class="modal-body">
+                  <%= render :template => 'epp_client/transfer_request'%>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </body>
+  <%= javascript_include_tag "application" %>
+</html>

@@ -1,0 +1,69 @@
+          <div class="control-group">
+            <label class="control-label" for="debtor_code">Customer</label>
+            <div class="controls">
+              <div class="input-append span9">
+                <%= f.text_field :debtor_code, :class => "span10 required", :id => "cus", :placeholder => "e.g something", 'AUTOCOMPLETE' => "off", 'data-provide'=>"typeahead", 'data-items'=>"4", 'data-source'=> @autocomplete_customer.to_json %>
+                <a class="btn" id="preview" role="button" href="#">I?</a>
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="debtor_code">With Delegate Hosts</label>
+            <div class="controls">
+                <%= radio_button_tag 'with_host', 'with_d_host', true, :onchange =>"disAblenAble();"%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">NS Host Name 1</label>
+            <div class="controls">
+              <%= text_field_tag "hostname1", "ns1.testing.test.dnservices.co.za", :class => "span9 required"%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">NS Host Name 2</label>
+            <div class="controls">
+              <%= text_field_tag "hostname2", "ns2.testing.test.dnservices.co.za", :class => "span9 required"%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="debtor_code">With ns Host(s)</label>
+            <div class="controls">
+                <%= radio_button_tag 'with_host', 'with_host', false, :onchange =>"disAblenAble();"%>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">NS Host Name 1</label>
+            <div class="controls">
+              <%= f.text_field :ns_hostname1, :disabled => true, :class => "span9 required", :placeholder => "e.g ns1.example.co.za" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">IP Address v4</label>
+            <div class="controls">
+              <%= f.text_field :ns1_ipv4_addr, :disabled => true, :class => "span9 required", :placeholder => "e.g 127.0.0.1" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">IP Address v6</label>
+            <div class="controls">
+              <%= f.text_field :ns1_ipv6_addr, :disabled => true, :class => "span9", :placeholder => "e.g ::1/128" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">NS Host Name 2</label>
+            <div class="controls">
+              <%= f.text_field :ns_hostname2, :disabled => true, :class => "span9", :placeholder => "e.g ns2.example.co.za" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">IP Address v4</label>
+            <div class="controls">
+              <%= f.text_field :ns2_ipv4_addr, :disabled => true, :class => "span9", :placeholder => "e.g 127.0.0.1" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">IP Address v6</label>
+            <div class="controls">
+              <%= f.text_field :ns2_ipv6_addr, :disabled => true, :class => "span9", :placeholder => "e.g ::1/128" %>
+            </div>
+          </div>

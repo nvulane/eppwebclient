@@ -1,0 +1,16 @@
+      <%= form_for(:customer, :url => {:action => 'create_customer'}, :html => { :onsubmit => "return $(this).validate()", :class => "form-horizontal form-condensed", :id => "new_customer"}) do |f|%>
+          <div class="control-group">
+            <label class="control-label" for="first_name">Debtor Code</label>
+            <div class="controls">
+              <%= f.text_field :debtor_code, :class => "large span9 required", :placeholder => "Debtor Code" %>
+            </div>
+          </div>
+          <%= render 'shared/contacts_controls', :f => f %>
+          <div class="control-group">
+            <label class="control-label" for="first_name"></label>
+            <div class="controls">
+              <%= f.submit "Add Customer", :class => "btn-info btn btn-xlarge" %>
+            </div>
+          </div>
+      <% end %>
+

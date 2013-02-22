@@ -1,0 +1,12 @@
+<% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>">
+          <div>
+              <% @values = value.split(",") %>
+              <ul>
+              <% @values.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+              </ul>
+          </div></div>
+ <% end %>
+

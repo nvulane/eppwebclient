@@ -1,0 +1,35 @@
+<%= render 'shared/search_form', :locals => { :action_name => "domains" }%>
+<table id="domtable" class="table table-hover">
+	<thead>
+		<tr>
+			    <th>Domain Name</th>
+        	<th>Customer ID</th>
+        	<th>Name Server</th>
+        	<th>Name Server</th>
+        	<th>Action</th>
+		</tr>
+	</thead>
+  	<tbody>
+  		<% @domains.each do |d|%>
+  		<tr>
+  			<td><%= d.domain_name %></td>
+        <td><%= d.debtor_code %></td>
+  			<td><%= d.ns_hostname1 %></td>
+  			<td><%= d.ns_hostname2 %></td>
+  			<td>
+          <div class="btn-group">
+            <button id="test" class="btn dropdown-toggle btn-mini" data-toggle="dropdown">
+              Action
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+              <li><%= link_to ("More Info","/epp_client/domain_info?domain_name="+d.domain_name, 'data-target'=>"#my_modal") %></li>
+              <li><%= link_to ('Cancel Delete',{:action => "edit_domain", :domain_name => d.domain_name}) %></li>
+            </ul>
+        </div>
+  			</td>
+  		</tr>
+  		<% end -%>
+  	</tbody>
+</table>
+<%= will_paginate @domains, :class => 'dmns'%>

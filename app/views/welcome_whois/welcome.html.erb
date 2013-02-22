@@ -1,0 +1,13 @@
+<div class="row-fluid">
+ <%= render 'shared/messages'%>
+  <div class="form-background">
+  <div id="myform" class="span9 offset3">
+    <%= form_tag({:action => "domain_whois" },{:onsubmit => "return $(this).validate()",:class => "form-search", :id => "domain_whois"}) do %>
+      <div class="input-append span6">
+        <input type="text" class="span20 search-query" id="search" AUTOCOMPLETE = "off" name="domain_name"  data-provide="typeahead" data-items="4" data-source='<%= @autocomplete_items.to_json %>'>
+        <button type="submit" class="btn">Search</button>
+      </div>
+    <% end -%>
+  </div>
+</div>
+</div>

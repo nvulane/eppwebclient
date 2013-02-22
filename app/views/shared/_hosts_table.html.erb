@@ -1,0 +1,32 @@
+<%= render 'shared/search_form', :locals => { :action_name => "hosts" }%>
+<table class="table table-hover">
+  <thead>
+    <tr>
+        <th>Host Name</th>
+        <th>IPv4</th>
+        <th>IPv6</th>
+        <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @hosts.each do |h|%>
+    <tr>
+      <td><%= h.hostname %></td>
+      <td><%= h.ipv4_addr %></td>
+      <td><%= h.ipv6_addr %></td>
+      <td>
+          <div class="btn-group <%= num <= 2 ? "dropup" : ""%>">
+            <button id="test" class="btn dropdown-toggle btn-mini" data-toggle="dropdown">
+              Action
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+              <li><%= link_to ("More Info","#") %></li>
+            </ul>
+        </div>
+        </td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>
+<%= will_paginate @hosts, :class => 'msgs' %>

@@ -1,0 +1,9 @@
+<div id="order_state_code_wrapper">
+<% parent_region = parent_region || params[:parent_region] %>
+  <% country = Carmen::Country.coded(parent_region) %>
+  <% if country.nil? %>
+    <em>Please select a country above</em>
+  <% else%>
+    <%= subregion_select(:customer, :customer_province, parent_region,{:prompt => true}, {:class => "span9"}) %>
+  <% end %>
+</div>

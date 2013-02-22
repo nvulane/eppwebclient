@@ -1,0 +1,18 @@
+<%= render 'shared/search_form', :locals => { :action_name => "domains" }%>
+<table id="domtable" class="table table-hover">
+	<thead>
+		<tr>
+			    <th>Domain Name</th>
+          <th>Transferred</th>
+		</tr>
+	</thead>
+  	<tbody>
+  		<% @reqdomains.each do |d|%>
+  		<tr>
+  			<td><%= d.reqdomain %></td>
+        <td><%= d.is_transferred %></td>
+  		</tr>
+  		<% end -%>
+  	</tbody>
+</table>
+<%= will_paginate @reqdomains, :class => 'dmns'%>

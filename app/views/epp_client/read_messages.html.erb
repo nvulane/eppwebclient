@@ -1,0 +1,19 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+        <th>#</th>
+        <th>Message</th>
+        <th>Read By</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @messages.each do |m|%>
+    <tr>
+      <td><%= m.id %></td>
+      <td><%= m.message %></td>
+      <td><%= m.readby%></td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>
+<%= will_paginate @messages, :class => 'msgs' %>

@@ -1,0 +1,27 @@
+   <%= form_for(:host, :url => {:action => 'create_host'}, :html => { :onsubmit => "return $(this).validate()", :class => "form-horizontal form-condensed", :id => "new_host"}) do |f|%>
+          <div class="control-group">
+            <label class="control-label" for="first_name">Hostname</label>
+            <div class="controls">
+              <%= f.text_field :hostname, :class => "large span9 required", :placeholder => "e.g ns1.example.co.za" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">IPv4 Address</label>
+            <div class="controls">
+              <%= f.text_field :ipv4_addr, :class => "large span9 required", :placeholder => "e.g 127.0.0.1" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name">IPv6 Address</label>
+            <div class="controls">
+              <%= f.text_field :ipv6_addr, :class => "large span9 required", :placeholder => "e.g ::1/128" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name"></label>
+            <div class="controls">
+              <button class="btn-info btn btn-xlarge" type="submit" id="registerButton">Create </button>
+            </div>
+          </div>
+    <%end%>
+

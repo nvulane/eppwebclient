@@ -1,0 +1,47 @@
+<%= render 'shared/search_form', :locals => { :action_name => "customers" }%>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Customer ID</th>
+        	<th>Customer Name</th>
+        	<th>Company Name</th>
+        	<th>Email</th>
+        	<th>Action</th>
+		</tr>
+	</thead>
+  	<tbody>
+  		<% @customers.each do |c|%>
+  		<tr>
+  			<td><%= c.debtor_code %></td>
+  			<td><%= c.customer_name %></td>
+  			<td><%= c.customer_org %></td>
+  			<td><%= c.customer_email %></td>
+  			<td>
+  				<div class="btn-group">
+  					<a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
+    					Action
+    					<span class="caret"></span>
+  					</a>
+  					<ul class="dropdown-menu pull-right">
+              <li><%= link_to ("More Info","/epp_client/customer_info?debtor_code="+c.debtor_code, 'data-target'=>"#my_modal") %></li>
+              <li><%= link_to ('Modify',:action => "edit_customer", :debtor_code => c.debtor_code) %></li>
+  						<li><%= link_to ("Delete",{:action => "destroy_customer", :debtor_code => c.debtor_code}, :confirm => "Deleting \""+c.debtor_code+"\"?") %></li>
+  					</ul>
+				</div>
+  			</td>
+  		</tr>
+  		<% end -%>
+  	</tbody>
+</table>
+<%= will_paginate @customers%>
+<div class="modal hide fade" id="my_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Customer Info</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>

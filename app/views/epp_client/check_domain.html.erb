@@ -1,0 +1,19 @@
+<div class="span9">
+<div class="row-fluid">
+  <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+ <% end %>
+  <div class="form-background">
+  <div class="span9 offset3">
+    <%= form_for(Domain.new, :url => {:action => 'available_domain'}, :html => {:class => "form-search"}) do |f|%>
+      <div class="clearfix">
+        <div class="input">
+           <%= f.text_field :domain_name, :class => "input-medium large span7 required", :placeholder => "Domain" %>
+           <%= f.submit "Check Domain", :class => "btn btn-primary" %>
+        </div>
+      </div>
+    <%end%>
+  </div>
+  </div>
+  </div>
+</div>

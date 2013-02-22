@@ -1,0 +1,27 @@
+<form id="msgtbl" action="">
+<table class="table table-hover">
+  <thead>
+    <tr>
+        <th>#</th>
+        <th>Message</th>
+        <th>Read?</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @messages.each do |m|%>
+    <tr id=<%=m.id%>>
+      <td><%= m.id %></td>
+      <td><%= m.message %></td>
+      <td>
+        <% if m.read.to_s == "false" %>
+          <button class="btn-info btn btn-mini" name=<%=m.id%> type="submit" id="shit">Read</button>
+        <%else%>
+          <%="Yes"%>
+        <% end -%>
+      </td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>
+<%= will_paginate @messages, :class => 'msgs' %>
+</form>

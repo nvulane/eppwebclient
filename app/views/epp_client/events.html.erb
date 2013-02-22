@@ -1,0 +1,24 @@
+<%= render 'shared/search_form', :locals => { :action_name => "events" }%>
+<table class="table table-hover" width="100%">
+  <thead>
+    <tr>
+        <th>User</th>
+        <th>Action</th>
+        <th>Parameters</th>
+        <th>CltrID</th>
+        <th>SvtrID</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @events.each do |e|%>
+    <tr>
+      <td><%= e.username %></td>
+      <td><%= e.action %></td>
+      <td><%= e.params %></td>
+      <td width="25"><%= e.cltrid %></td>
+      <td><%= e.svtrid %></td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>
+<%= will_paginate @events%>

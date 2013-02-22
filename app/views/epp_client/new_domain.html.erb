@@ -1,0 +1,22 @@
+   <%= form_for(:domain, :url => {:action => 'create_domain'}, :html => { :onsubmit => "return $(this).validate()", :class => "form-horizontal form-condensed", :id => "new_domain"}) do |f|%>
+          <div class="control-group">
+            <label class="control-label" for="first_name">Domain Name</label>
+            <div class="controls">
+              <%= f.text_field :domain_name, :class => "span9 required", :placeholder => "e.g example.co.za" %>
+            </div>
+          </div>
+          <%= render('shared/domain_controls', :f => f) %>
+          <div class="control-group">
+            <label class="control-label" for="first_name">Domain Secret</label>
+            <div class="controls">
+              <%= f.text_field :domain_secret, :class => "large span9 required", :placeholder => "e.g something" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name"></label>
+            <div class="controls">
+              <button class="btn-info btn btn-xlarge" type="submit" id="registerButton">Register </button>
+            </div>
+          </div>
+    <%end%>
+

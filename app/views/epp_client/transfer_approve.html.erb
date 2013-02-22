@@ -1,0 +1,25 @@
+<fieldset>
+  <legend>Approve Transfer</legend>
+<div class="span9">
+      <%= form_for(:domain, :url => {:action => 'approving_transfer'}, :html => { :class => "form-horizontal form-condensed"}) do |f|%>
+          <div class="control-group">
+            <label class="control-label" for="first_name">Domain Name</label>
+            <div class="controls">
+              <%= f.text_field :domain_name, :readonly => true, :class => "large span9 required", :placeholder => "e.g example.co.za" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="debtor_code">Customer</label>
+            <div class="controls">
+              <%= f.text_field :debtor_code, :readonly => true, :class => "large span9 required", :placeholder => "e.g something" %>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="first_name"></label>
+            <div class="controls">
+              <button class="btn-info btn btn-xlarge" type="submit">Approve</button>
+            </div>
+          </div>
+        <%end%>
+</div>
+</fieldset>
