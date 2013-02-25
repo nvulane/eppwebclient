@@ -1,10 +1,7 @@
           <div class="control-group">
             <label class="control-label" for="debtor_code">Customer</label>
             <div class="controls">
-              <div class="input-append span9">
-                <%= f.text_field :debtor_code, :class => "span10 required", :id => "cus", :placeholder => "e.g something", 'AUTOCOMPLETE' => "off", 'data-provide'=>"typeahead", 'data-items'=>"4", 'data-source'=> @autocomplete_customer.to_json %>
-                <a class="btn" id="preview" role="button" href="#">I?</a>
-              </div>
+              <%= f.text_field :debtor_code, :class => "span10 required", :id => "cus", :placeholder => "e.g something", 'AUTOCOMPLETE' => "off", 'data-provide'=>"typeahead", 'data-items'=>"4", 'data-source'=> @autocomplete_customer.to_json %>
             </div>
           </div>
           <div class="control-group">
