@@ -1,7 +1,7 @@
 class Domain < ActiveRecord::Base
   self.primary_key = "domain_name"
   belongs_to :customer, {:foreign_key => "debtor_code"}
-  attr_accessible :debtor_code, :domain_name, :ns_hostname1, :ns1_ipv4_addr, :ns1_ipv6_addr, :ns_hostname2, :ns2_ipv4_addr, :ns2_ipv6_addr, :domain_secret
+  attr_accessible :debtor_code, :domain_name, :ns_hostname1, :ns1_ipv4_addr, :ns1_ipv6_addr, :ns_hostname2, :ns2_ipv4_addr, :ns2_ipv6_addr, :expiry_date, :domain_secret, :autorenew,:transfer_away, :deleted
 
   #DOMAIN_REGX = /^[A-Z0-9][A-Z0-9-]{1,61}[A-Z0-9]\.co\.za$/i  
   DOMAIN_REGX = /^((?!xn--)(?!.*-\.))[a-z0-9][a-z-0-9]*\.test\.dnservices\.co\.za$/

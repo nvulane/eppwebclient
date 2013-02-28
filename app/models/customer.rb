@@ -4,7 +4,6 @@ class Customer < ActiveRecord::Base
    has_many :domains
    attr_accessible :debtor_code, :customer_name, :customer_org, :street1, :street2, :street3, :customer_city, :customer_province, :customer_postal, 
                    :customer_country, :customer_tel, :customer_fax, :customer_email, :customer_pass
-   attr_protected 
 
    EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i    
    TEL_REGEX = /^\+([0-9]{1,3}\.[0-9]{6,14})/

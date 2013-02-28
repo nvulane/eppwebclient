@@ -3,6 +3,7 @@
 	<thead>
 		<tr>
 			    <th>Domain Name</th>
+          <th>Customer</th>
           <th>Transferred</th>
 		</tr>
 	</thead>
@@ -10,6 +11,7 @@
   		<% @reqdomains.each do |d|%>
   		<tr>
   			<td><%= d.reqdomain %></td>
+        <td><%= d.debtor_code %></td>
         <td><%= d.is_transferred %></td>
   		</tr>
   		<% end -%>

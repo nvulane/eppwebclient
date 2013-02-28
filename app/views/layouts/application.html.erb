@@ -55,13 +55,15 @@
                 <a class="dropdown-toggle"
                   data-toggle="dropdown"
                   href="#">
-                    New
+                   Add 
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
                   <li><%= link_to ("Customer","#modal-customer", 'data-toggle' => "modal") %></li>
                   <li><%= link_to ("Domain","#modal-domain", 'data-toggle' => "modal") %></li>
                   <li><%= link_to ("Name Server","#modal-host", 'data-toggle' => "modal") %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to ("Request Transfer","#modal-request", 'data-toggle' => "modal") %></li>
                 </ul>
               </li>
               <li class=<%= @page_tab == "messages" ? "active" : "" %>><%= link_to ("Unread "+@count.to_s,{:action => 'index'})%></li>
@@ -79,7 +81,6 @@
                   <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Read Messages",{:action => 'read_messages'})%></li>
                   <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Deleted Domains",{:action => 'deleted_domains'})%></li>
                   <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Requested Domains",{:action => 'requested_domains'})%></li>
-                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Request Transfer","#modal-request", 'data-toggle' => "modal") %></li>
                   <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Events",{:action => 'events'})%></li>
                 </ul>
               </li>
