@@ -1,0 +1,20 @@
+development:
+  epp_server: localhost 
+  epp_username: username
+  epp_password: password
+  ldap_server: localhost
+  acc_suffix: @example.net
+
+test:
+  epp_server: localhost
+  epp_username: username
+  epp_password: password
+  ldap_server: localhost
+  acc_suffix: @example.net
+
+production:
+  epp_server: localhost
+  epp_username: username
+  epp_password: password
+  ldap_server: localhost
+  acc_suffix: @example.net
