@@ -41,9 +41,10 @@ class EppClientController < ApplicationController
             @reqdomains.update_attributes(:is_transferred => "true")
             @result = @epp.info_domain(dom)
             if @result[:status].to_s == '1000'
-              exp = @result[:domainExDate].to_s
+              exp = @result[:resdata][:domainExDate].to_s
+              xpd = exp[/\d+-\d+-\d+/]
               Domain.create(:debtor_code => @reqdomains["debtor_code"],:domain_name => @result[:resdata][:domainName].to_s, :ns_hostname1 => @result[:resdata][:domainNs][0].to_s, 
-                            :ns_hostname2 => @result[:resdata][:domainNs][1].to_s, :expiry_date => (exp[/\d+-\d+-\d+/]).to_datetime, :domain_secret => "coza")
+                            :ns_hostname2 => @result[:resdata][:domainNs][1].to_s, :expiry_date => xpd, :domain_secret => "coza")
             end
           elsif line =~ /transfer requested/
             dom = line.scan(/'([^"]\S*)'/)
