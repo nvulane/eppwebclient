@@ -31,22 +31,7 @@ class EppClientController < ApplicationController
           line = @result[:msgtext].to_s
           new_message(line)
           @epp.ack(@result[:svtrid].to_s)
-          if line =~ /transfer rejected/
-            dom = line.scan(/'([^"]*)'/)
-            @reqdomains = RequestedDomain.find_by_reqdomain(dom[0])
-            @reqdomains.destroy
-          elsif line =~ /transfer successful/
-            dom = line.scan(/'([^"]*)'/)
-            @reqdomains = RequestedDomain.find_by_reqdomain(dom[0])
-            @reqdomains.update_attributes(:is_transferred => "true")
-            @result = @epp.info_domain(dom)
-            if @result[:status].to_s == '1000'
-              exp = @result[:resdata][:domainExDate].to_s
-              xpd = exp[/\d+-\d+-\d+/]
-              Domain.create(:debtor_code => @reqdomains["debtor_code"],:domain_name => @result[:resdata][:domainName].to_s, :ns_hostname1 => @result[:resdata][:domainNs][0].to_s, 
-                            :ns_hostname2 => @result[:resdata][:domainNs][1].to_s, :expiry_date => xpd, :domain_secret => "coza")
-            end
-          elsif line =~ /transfer requested/
+          if line =~ /transfer requested/
             dom = line.scan(/'([^"]\S*)'/)
             @domain = Domain.find_by_domain_name(dom[0])
             @domain.update_attributes(:transfer_away => "true")
@@ -107,7 +92,6 @@ class EppClientController < ApplicationController
          flash[:error] = @result[:text].to_s
          render('new_customer')
       end
-    @epp.ack(@result[:svtrid].to_s)
   end
   def update_customer
     @customer = Customer.find_by_debtor_code(params[:customer][:debtor_code])
@@ -125,7 +109,6 @@ class EppClientController < ApplicationController
          flash[:error] = @result[:text].to_s
          render('edit_customer')
        end
-       @epp.ack(@result[:svtrid].to_s)
   end
   def destroy_customer
       @result = @epp.delete_contact(params[:debtor_code])
@@ -139,7 +122,6 @@ class EppClientController < ApplicationController
         flash[:error] = @result[:text].to_s
         redirect_to :action => 'index'
       end
-      @epp.ack(@result[:svtrid].to_s)
   end
   def create_host
     @host = Host.new(params[:host])
@@ -154,22 +136,21 @@ class EppClientController < ApplicationController
       flash[:error] = @result[:text].to_s
       redirect_to :action => 'index'
     end
-    @epp.ack(@result[:svtrid].to_s)
   end
 
   def create_domain
-    expiry = Date.today.advance(:months => 12)
+    expiry = DateTime.now.advance(:months => 12)
     if params[:with_host_with_host]
       @result = @epp.create_domain(params[:domain][:domain_name], params[:domain][:debtor_code],
                                              [{ "hostname" => params[:domain][:ns_hostname1],"ip_v4_address" => params[:domain][:ns1_ipv4_addr], "ip_v6_address" => params[:domain][:ns1_ipv6_addr]},
                                               { "hostname" => params[:domain][:ns_hostname2],"ip_v4_address" => params[:domain][:ns2_ipv4_addr], "ip_v6_address" => params[:domain][:ns2_ipv6_addr]}],
                                              params[:domain][:domain_secret])
-      @domain = Domain.new(params[:domain].merge(:expiry_date => expiry.to_datetime))
+      @domain = Domain.new(params[:domain].merge(:expiry_date => expiry))
     else
       @result = @epp.create_domain(params[:domain][:domain_name], params[:domain][:debtor_code],[{"hostname" => params[:hostname1]},
                                                                                            {"hostname" => params[:hostname2]}],
                                                                   params[:domain][:domain_secret])
-      @domain = Domain.new(params[:domain].merge(:ns_hostname1 => params[:hostname1],:ns_hostname2 => params[:hostname2],:expiry_date => expiry.to_datetime))
+      @domain = Domain.new(params[:domain].merge(:ns_hostname1 => params[:hostname1],:ns_hostname2 => params[:hostname2],:expiry_date => expiry))
     end
     new_message(@result[:text].to_s)
     create_event("create_domain", params[:domain], @result[:cltrid].to_s, @result[:svtrid].to_s)
@@ -181,10 +162,6 @@ class EppClientController < ApplicationController
       flash[:error] = @result[:text].to_s
       redirect_to :action => 'index'
     end
-    @epp.ack(@result[:svtrid].to_s)
-  end
-  def edit_domain
-    @domain = Domain.find_by_domain_name(params[:domain_name])
   end
   def update_domain
     @domain = Domain.find_by_domain_name(params[:domain][:domain_name])
@@ -222,7 +199,6 @@ class EppClientController < ApplicationController
     if @result
       new_message(@result[:text].to_s)
       create_event("update_domain", params[:domain], @result[:cltrid].to_s, @result[:svtrid].to_s)
-      @epp.ack(@result[:svtrid].to_s)
     end
   end
   def destroy_domain
@@ -239,21 +215,38 @@ class EppClientController < ApplicationController
       end
       new_message(@result[:text].to_s)
       create_event("delete_domain", params[:domain_name], @result[:cltrid].to_s, @result[:svtrid].to_s)
-      @epp.ack(@result[:svtrid].to_s)
+  end
+  def destroy_host
+      @result = @epp.delete_domain(params[:hostname])
+      if @result[:status].to_s == '1001'
+        @host = Host.find_by_hostname(params[:hostname])
+        @host.destroy
+        flash[:success] = @result[:text].to_s
+        redirect_to :action => 'index'
+      else
+        flash[:error] = @result[:text].to_s
+        redirect_to :action => 'index'
+      end
+      new_message(@result[:text].to_s)
+      create_event("delete_host", params[:hostname], @result[:cltrid].to_s, @result[:svtrid].to_s)
   end
   def requesting_transfer
      @result = @epp.transfer_domain(params[:requested_domain][:reqdomain])
      new_message(@result[:text].to_s)
      create_event("transfer_domain", params[:domain], @result[:cltrid].to_s, @result[:svtrid].to_s)
      if @result[:status].to_s == '1001'
-        RequestedDomain.create(params[:requested_domain])
+        @transquery = @epp.transfer_query(params[:requested_domain][:reqdomain])
+        if @transquery[:status].to_s == '1000'
+          issue = (@transquery[:trnData][:domainreDate].to_s).to_datetime
+          vote = (@transquery[:trnData][:domainacDate].to_s).to_datetime
+          RequestedDomain.create(params[:requested_domain].merge(:status => @transquery[:trnData][:domaintrStatus].to_s, :issue => issue, :vote => vote))
+        end
         flash[:success] = @result[:text].to_s
         redirect_to :action => 'index'
      else
         flash[:error] = @result[:text].to_s
         redirect_to :action => 'index'
      end
-     @epp.ack(@result[:svtrid].to_s)
   end
   def approving_transfer
     @result = @epp.transfer_approve(params[:domain_name])
@@ -267,7 +260,6 @@ class EppClientController < ApplicationController
        flash[:error] = @result[:text].to_s
        redirect_to :action => 'index'
     end
-    @epp.ack(@result[:svtrid].to_s)
   end
   def date_renewing
     @domain = Domain.find_by_domain_name(params[:domain][:domain_name])
@@ -275,14 +267,13 @@ class EppClientController < ApplicationController
     new_message(@result[:text].to_s)
     create_event("date_renew", params[:domain], @result[:cltrid].to_s, @result[:svtrid].to_s)
     if @result[:status].to_s == '1000'
-        @domain.update_attributes(:expiry_date => (params[:expriry_date].to_date).advance(:months => 12))
+        @domain.update_attributes(:expiry_date => (params[:expriry_date].to_datetime).advance(:months => 12))
         flash[:success] = @result[:text].to_s
         redirect_to :action => 'index'
     else
         flash[:error] = @result[:text].to_s
         redirect_to :action => 'index'
     end
-    @epp.ack(@result[:svtrid].to_s)
   end
   def set_true
     @result = @epp.set_autorenew(params[:domain_name],"true")
@@ -367,6 +358,29 @@ class EppClientController < ApplicationController
     respond_to do |format|
       format.text { render :text => answer }
     end
+  end
+  def who_is
+    @result = @epp.info_domain(params[:search])
+    answer=""
+    if @result[:status].to_s == '1000'
+       @result[:resdata].each do |key, data|
+        if key.to_s == "domainNs"
+          @result[:resdata][:domainNs].each do |ns|
+            answer = answer + "Name Server = \"#{ns}\","
+          end
+        else
+          answer = answer + "#{@dom_conversion[key.to_s]} = \"#{data}\", "
+        end
+      end
+      flash[:info] = (answer.to_s).chop
+    else
+      answer = @result[:text].to_s
+      flash[:error] = answer
+    end
+    redirect_to :action => 'whois'
+  end
+  def customer_domains
+     @result = @epp.info_contact_linkeddomains(params[:debtor_code],"pass")
   end
   
   def new_message(msg)

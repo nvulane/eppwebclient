@@ -1,5 +1,5 @@
 class RequestedDomain < ActiveRecord::Base
-  attr_accessible :reqdomain,:debtor_code, :is_transferred
+  attr_accessible :reqdomain,:debtor_code, :is_transferred, :status, :vote, :issue
 
   def self.search(search)
     if search

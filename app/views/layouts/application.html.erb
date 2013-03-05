@@ -70,6 +70,7 @@
               <li class=<%= @page_tab == "customers" ? "active" : "" %>><%= link_to ("Customers",{:action => 'customers'})%></li>
               <li class=<%= @page_tab == "domains" ? "active" : "" %>><%= link_to ("Domains",{:action => 'domains'})%></li>
               <li class=<%= @page_tab == "hosts" ? "active" : "" %>><%= link_to ("Host Servers",{:action => 'hosts'})%></li>
+              <!--<li class=<%= @page_tab == "whois" ? "active" : "" %>><%= link_to ("Whois",{:action => 'whois'})%></li>-->
               <li class="dropdown pull-right">
                 <a class="dropdown-toggle"
                   data-toggle="dropdown"
@@ -80,7 +81,7 @@
                 <ul class="dropdown-menu">
                   <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Read Messages",{:action => 'read_messages'})%></li>
                   <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Deleted Domains",{:action => 'deleted_domains'})%></li>
-                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Requested Domains",{:action => 'requested_domains'})%></li>
+                  <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Pending Domains",{:action => 'requested_domains'})%></li>
                   <li class=<%= @page_tab == "events" ? "active" : "" %>><%= link_to ("Events",{:action => 'events'})%></li>
                 </ul>
               </li>

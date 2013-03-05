@@ -14,6 +14,7 @@ gem 'nokogiri'
 gem 'net-ldap', '~> 0.2.2'
 gem 'will_paginate'
 gem 'json'
+gem 'daemons'
 gem 'carmen-rails', '~> 1.0.0.beta3'
 
 # Gems used only for assets and not required

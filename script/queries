@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'daemons'
+
+dir = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+
+daemon_options = {
+  :multiple   => false,
+  :dir_mode   => :normal,
+  :dir        => File.join(dir, 'tmp', 'pids'),
+  :backtrace  => true
+}
+script = "#{dir}/daemons/#{ARGV[1]}"
+Daemons.run(script, daemon_options) 
+

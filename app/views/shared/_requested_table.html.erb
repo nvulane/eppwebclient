@@ -4,7 +4,9 @@
 		<tr>
 			    <th>Domain Name</th>
           <th>Customer</th>
-          <th>Transferred</th>
+          <th>Status</th>
+          <th>Issued</th>
+          <th>Vote</th>
 		</tr>
 	</thead>
   	<tbody>
@@ -12,7 +14,9 @@
   		<tr>
   			<td><%= d.reqdomain %></td>
         <td><%= d.debtor_code %></td>
-        <td><%= d.is_transferred %></td>
+        <td><%= d.status %></td>
+        <td><%= d.issue %></td>
+        <td><%= d.vote %></td>
   		</tr>
   		<% end -%>
   	</tbody>
